@@ -19,6 +19,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -49,7 +50,8 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun BatteryScreen(modifier: Modifier = Modifier) {
 val context = LocalContext.current
-    var isBatteryHigh by remember { mutableStateOf(false)}
+    var batteryLevel by remember { mutableStateOf(context.getSystemService(BatteryManager::class.java).getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)) }
+    var isBatteryHigh by remember { mutableStateOf(batteryLevel >= 20)}
 
     DisposableEffect(Unit) {
         val receiver = object : BroadcastReceiver() {
@@ -85,6 +87,8 @@ val context = LocalContext.current
         }
     }
 }
+
+
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
